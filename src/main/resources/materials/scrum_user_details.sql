@@ -10,6 +10,7 @@ CREATE TABLE `scrum_user_details` (
   `username` varchar(30) NOT NULL UNIQUE,
   `first_name` varchar(50) NOT NULL,
   `last_name` varchar(50) NOT NULL,
+  `lchgtime` datetime NOT NULL,
   `gender` varchar(10) NOT NULL,
   `department_name` varchar(50) NOT NULL,
   `designation` varchar(50) NOT NULL,

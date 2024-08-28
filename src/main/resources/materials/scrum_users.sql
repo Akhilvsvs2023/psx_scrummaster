@@ -8,6 +8,7 @@ DROP TABLE IF EXISTS `scrum_users`;
 CREATE TABLE `scrum_users` (
   `username` varchar(30) NOT NULL,
   `password` varchar(255) NOT NULL,
+  `lchgtime` datetime NOT NULL,
   `role` varchar(50) NOT NULL,
   `created_on` datetime NOT NULL,
   `approved_on` datetime DEFAULT NULL,

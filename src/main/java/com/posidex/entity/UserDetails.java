@@ -1,6 +1,8 @@
 package com.posidex.entity;
 
 
+import java.util.Date;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -29,9 +31,11 @@ public class UserDetails {
 	private String emailId;
 	@Column(name = "reporting_to")
 	private String reportingTo;
+	@Column(name = "lchgtime")
+	private Date lchgtime;
 
 	public UserDetails(String empId, String username, String firstName, String lastName, String gender,
-			String departmentName, String designation, String emailId, String reportingTo) {
+			String departmentName, String designation, String emailId, String reportingTo,Date lchgtime) {
 		super();
 		this.empId = empId;
 		this.username = username;
@@ -42,6 +46,15 @@ public class UserDetails {
 		this.designation = designation;
 		this.emailId = emailId;
 		this.reportingTo = reportingTo;
+		this.lchgtime = lchgtime;
+	}
+
+	public Date getLchgtime() {
+		return lchgtime;
+	}
+
+	public void setLchgtime(Date lchgtime) {
+		this.lchgtime = lchgtime;
 	}
 
 	public String getEmpId() {
@@ -124,7 +137,8 @@ public class UserDetails {
 	public String toString() {
 		return "UserDetails [empId=" + empId + ", username=" + username + ", firstName=" + firstName + ", lastName="
 				+ lastName + ", gender=" + gender + ", departmentName=" + departmentName + ", designation="
-				+ designation + ", emailId=" + emailId + ", reportingTo=" + reportingTo + "]";
+				+ designation + ", emailId=" + emailId + ", reportingTo=" + reportingTo + ", lchgtime=" + lchgtime
+				+ "]";
 	}
 
 }

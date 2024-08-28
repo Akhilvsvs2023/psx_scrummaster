@@ -33,6 +33,12 @@ public class Task {
 	private String priority;
 	@Column(name = "active")
 	private int active;
+	@Column(name = "reviewer_comment")
+	private String reviewerComments;
+	@Column(name = "developer_comment")
+	private String developerComment;
+	@Column(name = "lchgtime")
+	private Date lchgtime;
 
 	public String getTaskId() {
 		return taskId;
@@ -122,16 +128,37 @@ public class Task {
 		this.active = active;
 	}
 
-	@Override
-	public String toString() {
-		return "Task [taskId=" + taskId + ", taskName=" + taskName + ", projectName=" + projectName + ", description="
-				+ description + ", assignedTo=" + assignedTo + ", assignedBy=" + assignedBy + ", createdOn=" + createdOn
-				+ ", deadline=" + deadline + ", closedOn=" + closedOn + ", priority=" + priority + ", active=" + active
-				+ "]";
+	public String getReviewerComments() {
+		return reviewerComments;
+	}
+
+	public void setReviewerComments(String reviewerComments) {
+		this.reviewerComments = reviewerComments;
+	}
+
+	public String getDeveloperComment() {
+		return developerComment;
+	}
+
+	public void setDeveloperComment(String developerComment) {
+		this.developerComment = developerComment;
+	}
+
+	public Date getLchgtime() {
+		return lchgtime;
+	}
+
+	public void setLchgtime(Date lchgtime) {
+		this.lchgtime = lchgtime;
+	}
+
+	public Task() {
+		super();
 	}
 
 	public Task(String taskId, String taskName, String projectName, String description, String assignedTo,
-			String assignedBy, Date createdOn, Date deadline, Date closedOn, String priority, int active) {
+			String assignedBy, Date createdOn, Date deadline, Date closedOn, String priority, int active,
+			String reviewerComments, String developerComment, Date lchgtime) {
 		super();
 		this.taskId = taskId;
 		this.taskName = taskName;
@@ -144,9 +171,18 @@ public class Task {
 		this.closedOn = closedOn;
 		this.priority = priority;
 		this.active = active;
+		this.reviewerComments = reviewerComments;
+		this.developerComment = developerComment;
+		this.lchgtime = lchgtime;
 	}
 
-	public Task() {
-		super();
+	@Override
+	public String toString() {
+		return "Task [taskId=" + taskId + ", taskName=" + taskName + ", projectName=" + projectName + ", description="
+				+ description + ", assignedTo=" + assignedTo + ", assignedBy=" + assignedBy + ", createdOn=" + createdOn
+				+ ", deadline=" + deadline + ", closedOn=" + closedOn + ", priority=" + priority + ", active=" + active
+				+ ", reviewerComments=" + reviewerComments + ", developerComment=" + developerComment + ", lchgtime="
+				+ lchgtime + "]";
 	}
+	
 }

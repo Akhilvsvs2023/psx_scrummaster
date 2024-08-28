@@ -36,13 +36,15 @@ public class User implements UserDetails {
 	private int locked;
 	@Column(name = "active")
 	private int active;
-
+	@Column(name = "lchgtime")
+	private Date lchgtime;
+	
 	public User() {
 		super();
 	}
 
 	public User(String username, String password, String role, Date createdOn, Date approvedOn, String actionBy,
-			String reason, int locked,int active) {
+			String reason, int locked,int active,Date lchgtime) {
 		super();
 		this.username = username;
 		this.password = password;
@@ -53,15 +55,17 @@ public class User implements UserDetails {
 		this.reason = reason;
 		this.locked = locked;
 		this.active=active;
-	}
-
-	@Override
-	public String toString() {
-		return "User [username=" + username + ", password=" + password + ", role=" + role + ", createdOn=" + createdOn
-				+ ", approvedOn=" + approvedOn + ", actionBy=" + actionBy + ", reason=" + reason + ", active=" + active + ", locked="
-				+ locked + "]";
+		this.lchgtime=lchgtime;
 	}
 	
+	public Date getLchgtime() {
+		return lchgtime;
+	}
+
+	public void setLchgtime(Date lchgtime) {
+		this.lchgtime = lchgtime;
+	}
+
 	public int getActive() {
 		return active;
 	}
@@ -157,6 +161,13 @@ public class User implements UserDetails {
 	@Override
 	public boolean isEnabled() {
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "User [username=" + username + ", password=" + password + ", role=" + role + ", createdOn=" + createdOn
+				+ ", approvedOn=" + approvedOn + ", actionBy=" + actionBy + ", reason=" + reason + ", locked=" + locked
+				+ ", active=" + active + ", lchgtime=" + lchgtime + "]";
 	}
 
 }

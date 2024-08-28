@@ -24,12 +24,12 @@ public class BeanDefinitionConfig {
 	@Bean
 	public BasicDataSource getDataSource() {
 		BasicDataSource basicDataSource = new BasicDataSource();
-		basicDataSource.setDriverClassName(environment.getProperty("spring.datasource.driver-class-name"));
-		basicDataSource.setUrl(environment.getProperty("spring.datasource.url"));
-		basicDataSource.setUsername(environment.getProperty("spring.datasource.username"));
-		basicDataSource.setPassword(environment.getProperty("spring.datasource.password"));
+		basicDataSource.setDriverClassName(environment.getProperty("datasource.driverClassName"));
+		basicDataSource.setUrl(environment.getProperty("datasource.url"));
+		basicDataSource.setUsername(environment.getProperty("datasource.username"));
+		basicDataSource.setPassword(environment.getProperty("datasource.password"));
 		try {
-			basicDataSource.setPassword(StringEncrypter.decrypt(environment.getProperty("spring.datasource.password")));
+			basicDataSource.setPassword(StringEncrypter.decrypt(environment.getProperty("datasource.password")));
 		} catch (EncryptionException e) {
 			logger.info("Password already decrypted");
 		}

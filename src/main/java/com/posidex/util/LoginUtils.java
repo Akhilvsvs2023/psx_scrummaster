@@ -206,6 +206,7 @@ public class LoginUtils {
 		user.setPassword(createUser.getPassword());
 		user.setRole(createUser.getDesignation());
 		user.setUsername(createUser.getUsername());
+		user.setLchgtime(new Date());
 		if (user.getRole().equals("Project Manager")) {
 			user.setLocked(0);
 			user.setActive(1);
@@ -230,6 +231,7 @@ public class LoginUtils {
 		userDetails.setLastName(createUser.getLastName());
 		userDetails.setReportingTo(createUser.getReportingTo());
 		userDetails.setUsername(createUser.getUsername());
+		userDetails.setLchgtime(new Date());
 		return userDetails;
 	}
 }

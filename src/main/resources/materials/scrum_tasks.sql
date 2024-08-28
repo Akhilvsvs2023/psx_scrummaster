@@ -17,5 +17,8 @@ CREATE TABLE `scrum_tasks` (
   `closed_on` datetime DEFAULT NULL,
   `priority` numeric(1) NOT NULL check(priority in (1,2,3,4)),
   `active` numeric(1) NOT NULL check(active in (0,1)),
+  `lchgtime` datetime NOT NULL,
+  `reviewer_comment` text DEFAULT NULL,
+  `developer_comment` text DEFAULT NULL,
   PRIMARY KEY (`task_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
