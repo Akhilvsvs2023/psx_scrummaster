@@ -154,7 +154,8 @@ public class LoginUtils {
 			boolean userExists = userService.userExists(createUser.getUsername());
 			boolean empIdExists = userService.empIdExists(createUser.getEmpId());
 			boolean reportingIdExists = userService.userExists(createUser.getReportingTo());
-			if (userExists || empIdExists || !reportingIdExists) {
+			if (userExists || empIdExists ||(!createUser.getDesignation().equals("Project Manager"))) {
+				
 				if (userExists) {
 					responseDTO.setMessage("UserId already exists");
 					responseDTO.setStatus(CommonStringUtils.FAILED);
@@ -165,7 +166,7 @@ public class LoginUtils {
 					responseDTO.setStatus(CommonStringUtils.FAILED);
 					responseDTO.setStatusCode(420);
 					return responseDTO;
-				} else {
+				} else if(!reportingIdExists) {
 					responseDTO.setMessage("Reporting id doesnt exists");
 					responseDTO.setStatus(CommonStringUtils.FAILED);
 					responseDTO.setStatusCode(430);
