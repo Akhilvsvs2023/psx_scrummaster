@@ -39,6 +39,7 @@ public class TaskUtils {
 			retValue.setStatusCode(310);
 			return retValue;
 		}
+		task.setLchgtime(new java.sql.Date(System.currentTimeMillis()));
 		taskService.addTask(task);
 		retValue.setStatus(CommonStringUtils.SUCCESS);
 		retValue.setMessage("Task Created");

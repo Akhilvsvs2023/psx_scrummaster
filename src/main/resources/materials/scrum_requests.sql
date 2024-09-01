@@ -9,6 +9,7 @@ DROP TABLE IF EXISTS `scrum_user_requests`;
 
 CREATE TABLE `scrum_user_requests` (
   `request_id` varchar(30) NOT NULL,
+  `request_type` varchar(30) NOT NULL,
   `raised_by` varchar(30) NOT NULL,
   `raised_to` varchar(30) NOT NULL,
   `operation_time` datetime NOT NULL,

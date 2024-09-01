@@ -8,11 +8,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "scrum_user_requests")
-public class UserActivation {
+@Table(name = "scrum_requests")
+public class Request {
 	@Id
 	@Column(name = "request_id")
 	private String requestId;
+	@Column(name = "request_type")
+	private String requestType;
 	@Column(name = "raised_by")
 	private String raisedBy;
 	@Column(name = "raised_to")
@@ -28,6 +30,14 @@ public class UserActivation {
 
 	public void setRequestId(String requestId) {
 		this.requestId = requestId;
+	}
+
+	public String getRequestType() {
+		return requestType;
+	}
+
+	public void setRequestType(String requestType) {
+		this.requestType = requestType;
 	}
 
 	public String getRaisedBy() {
@@ -62,24 +72,25 @@ public class UserActivation {
 		this.active = active;
 	}
 
-	@Override
-	public String toString() {
-		return "Requests [requestId=" + requestId + ", raisedBy=" + raisedBy + ", raisedTo=" + raisedTo
-				+ ", operationTime=" + operationTime + ", active=" + active + "]";
-	}
-
-	public UserActivation(String requestId, String raisedBy, String raisedTo, Date operationTime,
+	public Request(String requestId, String requestType, String raisedBy, String raisedTo, Date operationTime,
 			int active) {
 		super();
 		this.requestId = requestId;
+		this.requestType = requestType;
 		this.raisedBy = raisedBy;
 		this.raisedTo = raisedTo;
 		this.operationTime = operationTime;
 		this.active = active;
 	}
 
-	public UserActivation() {
+	public Request() {
 		super();
+	}
+
+	@Override
+	public String toString() {
+		return "Request [requestId=" + requestId + ", requestType=" + requestType + ", raisedBy=" + raisedBy
+				+ ", raisedTo=" + raisedTo + ", operationTime=" + operationTime + ", active=" + active + "]";
 	}
 
 }

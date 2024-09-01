@@ -15,7 +15,7 @@ import com.posidex.dto.CreateUserDTO;
 import com.posidex.dto.JwtRequest;
 import com.posidex.dto.JwtResponse;
 import com.posidex.dto.ResponseDTO;
-import com.posidex.entity.UserActivation;
+import com.posidex.entity.Request;
 import com.posidex.entity.User;
 import com.posidex.entity.UserDetails;
 import com.posidex.entity.UserOps;
@@ -96,7 +96,7 @@ public class LoginUtils {
 			userOpsService.addUserOps(userOps);
 			response.setJwtToken(null);
 			response.setMessage(
-					(user != null && user.getActive() == 0) ? "Username not activated" : "Invalid Username");
+					(user != null && user.getActive() == 0) ? "User not activated" : "Invalid Username");
 			response.setStatusCode((user != null && user.getActive() == 0) ? 540 : 520);
 			response.setUserDetails(null);
 		}
@@ -179,8 +179,9 @@ public class LoginUtils {
 			User user = fillUser(createUser);
 			UserDetails userDetails = fillUserDetails(createUser);
 			if (user.getActive() == 0) {
-				UserActivation request = new UserActivation();
+				Request request = new Request();
 				request.setRequestId("req_" + System.currentTimeMillis());
+				request.setRequestType(CommonStringUtils.USER_ACTIVATION);
 				request.setRaisedBy(userDetails.getEmpId());
 				request.setRaisedTo(userDetails.getReportingTo());
 				request.setOperationTime(new Date());

@@ -11,10 +11,10 @@ import org.springframework.stereotype.Service;
 
 import com.posidex.dto.ProfileRequestDTO;
 import com.posidex.dto.ResponseDTO;
-import com.posidex.entity.UserActivation;
+import com.posidex.entity.Request;
 import com.posidex.entity.User;
 import com.posidex.entity.UserDetails;
-import com.posidex.repository.UserRequestRepository;
+import com.posidex.repository.RequestRepository;
 import com.posidex.repository.UserRepository;
 import com.posidex.util.CommonStringUtils;
 import com.posidex.util.LoginUtils;
@@ -25,7 +25,7 @@ import jakarta.transaction.Transactional;
 public class RequestServiceImpl implements RequestServiceI {
 
 	@Autowired
-	private UserRequestRepository requestRepository;
+	private RequestRepository requestRepository;
 
 	@Autowired
 	private UserRepository userRepository;
@@ -38,13 +38,13 @@ public class RequestServiceImpl implements RequestServiceI {
 
 	@Transactional
 	@Override
-	public void addRequest(UserActivation request) {
+	public void addRequest(Request request) {
 		requestRepository.save(request);
 	}
 
 	@Override
-	public UserActivation getRequestByRequestID(String requestId) {
-		Optional<UserActivation> result = requestRepository.findById(requestId);
+	public Request getRequestByRequestID(String requestId) {
+		Optional<Request> result = requestRepository.findById(requestId);
 		if (result.isPresent()) {
 			return result.get();
 		}
@@ -54,19 +54,12 @@ public class RequestServiceImpl implements RequestServiceI {
 	@Override
 	public List<ProfileRequestDTO> getProfileRequests(String username) {
 		List<ProfileRequestDTO> retValue = new ArrayList<>();
-		UserDetails currentUser = userDetailsService.getUserDetailsByUsername(username);
-		List<User> inactiveUsersList = userRepository.getInactiveUsers();
-		inactiveUsersList.forEach(x -> {
-			UserDetails tempUserDetails = userDetailsService.getUserDetailsByUsername(x.getUsername());
-			if (tempUserDetails.getReportingTo().equals(currentUser.getEmpId())) {
-				retValue.add(new ProfileRequestDTO(tempUserDetails, getProfileActivationRequests(x.getUsername())));
-			}
-		});
+		List<Request> requestList = requestRepository.getProfileActivationRequests(username);
+		for(Request r :requestList) {
+			UserDetails u = userDetailsService.getUserDetailsByUsername(r.getRaisedBy());
+			retValue.add(new ProfileRequestDTO(u, r));
+		}
 		return retValue;
-	}
-
-	public UserActivation getProfileActivationRequests(String username) {
-		return requestRepository.getRequestsBasedOnUserAndOperation(username);
 	}
 
 	@Override
@@ -74,7 +67,7 @@ public class RequestServiceImpl implements RequestServiceI {
 		ResponseDTO response = new ResponseDTO();
 		try {
 			User user = userService.getUserByUserName(dataMap.get("username"));
-			UserActivation request = getRequestByRequestID(dataMap.get("requestId"));
+			Request request = getRequestByRequestID(dataMap.get("requestId"));
 			user.setLocked(0);
 			user.setActive(1);
 			user.setApprovedOn(new Date());
@@ -99,7 +92,7 @@ public class RequestServiceImpl implements RequestServiceI {
 		ResponseDTO response = new ResponseDTO();
 		try {
 			User user = userService.getUserByUserName(dataMap.get("username"));
-			UserActivation request = getRequestByRequestID(dataMap.get("requestId"));
+			Request request = getRequestByRequestID(dataMap.get("requestId"));
 			user.setLocked(1);
 			user.setReason(dataMap.get("message"));
 			user.setActionBy(dataMap.get("actionBy"));

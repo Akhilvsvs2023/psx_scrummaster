@@ -5,13 +5,13 @@ import java.util.Map;
 
 import com.posidex.dto.ProfileRequestDTO;
 import com.posidex.dto.ResponseDTO;
-import com.posidex.entity.UserActivation;
+import com.posidex.entity.Request;
 
 public interface RequestServiceI {
 
-	public void addRequest(UserActivation request);
+	public void addRequest(Request request);
 	
-	public UserActivation getRequestByRequestID(String requestId);
+	public Request getRequestByRequestID(String requestId);
 		
 	public List<ProfileRequestDTO> getProfileRequests(String username);
 	
