@@ -38,13 +38,15 @@ public class User implements UserDetails {
 	private int active;
 	@Column(name = "lchgtime")
 	private Date lchgtime;
-	
+	@Column(name = "level")
+	private int level;
+
 	public User() {
 		super();
 	}
 
 	public User(String username, String password, String role, Date createdOn, Date approvedOn, String actionBy,
-			String reason, int locked,int active,Date lchgtime) {
+			String reason, int locked, int active, Date lchgtime, int level) {
 		super();
 		this.username = username;
 		this.password = password;
@@ -54,10 +56,19 @@ public class User implements UserDetails {
 		this.actionBy = actionBy;
 		this.reason = reason;
 		this.locked = locked;
-		this.active=active;
-		this.lchgtime=lchgtime;
+		this.active = active;
+		this.lchgtime = lchgtime;
+		this.level = level;
 	}
-	
+
+	public int getLevel() {
+		return level;
+	}
+
+	public void setLevel(int level) {
+		this.level = level;
+	}
+
 	public Date getLchgtime() {
 		return lchgtime;
 	}
@@ -167,7 +178,7 @@ public class User implements UserDetails {
 	public String toString() {
 		return "User [username=" + username + ", password=" + password + ", role=" + role + ", createdOn=" + createdOn
 				+ ", approvedOn=" + approvedOn + ", actionBy=" + actionBy + ", reason=" + reason + ", locked=" + locked
-				+ ", active=" + active + ", lchgtime=" + lchgtime + "]";
+				+ ", active=" + active + ", lchgtime=" + lchgtime + ", level=" + level + "]";
 	}
 
 }

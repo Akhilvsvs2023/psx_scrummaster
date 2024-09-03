@@ -8,6 +8,15 @@ public class JwtResponse {
 	private String message;
 	private int statusCode;
 	private UserDetails userDetails;
+	private int level;
+
+	public int getLevel() {
+		return level;
+	}
+
+	public void setLevel(int level) {
+		this.level = level;
+	}
 
 	public String getJwtToken() {
 		return jwtToken;
@@ -37,15 +46,7 @@ public class JwtResponse {
 		return userDetails;
 	}
 
-	public void setUserDetails (UserDetails userDetails) {
-		this.userDetails = userDetails;
-	}
-
-	public JwtResponse(String jwtToken, String message, int statusCode, UserDetails userDetails) {
-		super();
-		this.jwtToken = jwtToken;
-		this.message = message;
-		this.statusCode = statusCode;
+	public void setUserDetails(UserDetails userDetails) {
 		this.userDetails = userDetails;
 	}
 
@@ -53,10 +54,19 @@ public class JwtResponse {
 		super();
 	}
 
+	public JwtResponse(String jwtToken, String message, int statusCode, UserDetails userDetails, int level) {
+		super();
+		this.jwtToken = jwtToken;
+		this.message = message;
+		this.statusCode = statusCode;
+		this.userDetails = userDetails;
+		this.level = level;
+	}
+
 	@Override
 	public String toString() {
-		return "JwtResponse [jwtToken=" + jwtToken + ", message=" + message + ", statusCode=" + statusCode + ", userDetails="
-				+ userDetails + "]";
+		return "JwtResponse [jwtToken=" + jwtToken + ", message=" + message + ", statusCode=" + statusCode
+				+ ", userDetails=" + userDetails + ", level=" + level + "]";
 	}
 
 }

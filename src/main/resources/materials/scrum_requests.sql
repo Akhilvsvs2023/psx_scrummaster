@@ -5,9 +5,9 @@ USE `scrummaster`;
 -- Table structure for table `scrum_requests`
 --
 
-DROP TABLE IF EXISTS `scrum_user_requests`;
+DROP TABLE IF EXISTS `scrum_requests`;
 
-CREATE TABLE `scrum_user_requests` (
+CREATE TABLE `scrum_requests` (
   `request_id` varchar(30) NOT NULL,
   `request_type` varchar(30) NOT NULL,
   `raised_by` varchar(30) NOT NULL,

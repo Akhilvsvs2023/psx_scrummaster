@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.posidex.entity.UserDetails;
 import com.posidex.repository.UserDetailsRepository;
+import com.posidex.util.CommonUtils;
 
 import jakarta.transaction.Transactional;
 
@@ -42,24 +43,28 @@ public class UserDetailsServiceImpl implements UserDetailsServiceI {
 		List<UserDetails> teamMembers = userDetailsRepository
 				.getTeamMembersByDepartment(currentUser.getDepartmentName());
 		List<UserDetails> traineeList = new ArrayList<>();
+		List<UserDetails> vpList = new ArrayList<>();
 		List<UserDetails> aSEList = new ArrayList<>();
 		List<UserDetails> sEList = new ArrayList<>();
 		List<UserDetails> sSEList = new ArrayList<>();
-		List<UserDetails> pMList = new ArrayList<>();
+		List<UserDetails> mList = new ArrayList<>();
 		teamMembers.forEach(x -> {
-			if (x.getDesignation().equals("Project Manager")) {
-				pMList.add(x);
-			} else if (x.getDesignation().equals("Senior Software Engineer")) {
+			if (x.getDesignation().equals(CommonUtils.manager)) {
+				mList.add(x);
+			} else if (x.getDesignation().equals(CommonUtils.senior_Software_Engineer)) {
 				sSEList.add(x);
-			} else if (x.getDesignation().equals("Software Engineer")) {
+			} else if (x.getDesignation().equals(CommonUtils.software_Engineer)) {
 				sEList.add(x);
-			} else if (x.getDesignation().equals("Associate Software Engineer")) {
+			} else if (x.getDesignation().equals(CommonUtils.associate_Software_Engineer)) {
 				aSEList.add(x);
-			} else {
+			} else if (x.getDesignation().equals(CommonUtils.trainee)) {
 				traineeList.add(x);
+			} else if (x.getDesignation().equals(CommonUtils.vice_President)) {
+				vpList.add(x);
 			}
 		});
-		retValue.put("pm", pMList);
+		retValue.put("vp", vpList);
+		retValue.put("pm", mList);
 		retValue.put("sse", sSEList);
 		retValue.put("se", sEList);
 		retValue.put("ase", aSEList);

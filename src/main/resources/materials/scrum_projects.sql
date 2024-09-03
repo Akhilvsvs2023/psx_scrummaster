@@ -6,7 +6,7 @@ USE `scrummaster`;
 DROP TABLE IF EXISTS `scrum_projects`;
 
 CREATE TABLE `scrum_projects` (
-  `project_id` varchar(30) NOT NULL,
+  `project_id` varchar(50) NOT NULL,
   `project_name` varchar(30) NOT NULL,
   `description` text NOT NULL,
   `created_by` varchar(10) NOT NULL,

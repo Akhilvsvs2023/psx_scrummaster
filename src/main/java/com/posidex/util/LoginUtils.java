@@ -20,6 +20,7 @@ import com.posidex.entity.User;
 import com.posidex.entity.UserDetails;
 import com.posidex.entity.UserOps;
 import com.posidex.entity.UserOpsIdentity;
+import com.posidex.enums.RoleEnums;
 import com.posidex.service.RequestServiceI;
 import com.posidex.service.UserDetailsServiceI;
 import com.posidex.service.UserOpsServiceI;
@@ -95,10 +96,10 @@ public class LoginUtils {
 			userOps.setRole((user != null && user.getActive() == 0) ? user.getRole() : CommonStringUtils.INVALID);
 			userOpsService.addUserOps(userOps);
 			response.setJwtToken(null);
-			response.setMessage(
-					(user != null && user.getActive() == 0) ? "User not activated" : "Invalid Username");
+			response.setMessage((user != null && user.getActive() == 0) ? "User not activated" : "Invalid Username");
 			response.setStatusCode((user != null && user.getActive() == 0) ? 540 : 520);
 			response.setUserDetails(null);
+			response.setLevel(0);
 		}
 		return response;
 	}
@@ -117,6 +118,7 @@ public class LoginUtils {
 			response.setMessage("Wait for " + (disableLoginMillis - timeFromLastInvalidLogin) / 1000 + " secs");
 			response.setStatusCode(530);
 			response.setUserDetails(null);
+			response.setLevel(0);
 		} else {
 			if (validatePassword(request.getPassword(), user)) {
 				userOps.setOperationType(CommonStringUtils.LOGIN_SUCCESS);
@@ -126,6 +128,7 @@ public class LoginUtils {
 				response.setMessage("Logged Successfully");
 				response.setStatusCode(200);
 				response.setUserDetails(userDetailsService.getUserDetailsByUsername(user.getUsername()));
+				response.setLevel(user.getLevel());
 			} else {
 				userOps.setOperationType(CommonStringUtils.LOGIN_FAILED);
 				userOps.setRole(user.getRole());
@@ -134,6 +137,7 @@ public class LoginUtils {
 				response.setMessage("Password Incorrect " + loginAttempt + " time");
 				response.setStatusCode(510);
 				response.setUserDetails(null);
+				response.setLevel(0);
 			}
 		}
 	}
@@ -153,8 +157,8 @@ public class LoginUtils {
 		try {
 			boolean userExists = userService.userExists(createUser.getUsername());
 			boolean empIdExists = userService.empIdExists(createUser.getEmpId());
-			boolean reportingIdExists = userService.userExists(createUser.getReportingTo());
-			if (userExists || empIdExists ||(!createUser.getDesignation().equals("Project Manager"))) {
+			boolean invalidReportingId = validateReportingId(createUser.getReportingTo(),createUser.getDesignation());
+			if (userExists || empIdExists ||invalidReportingId) {
 				
 				if (userExists) {
 					responseDTO.setMessage("UserId already exists");
@@ -166,8 +170,8 @@ public class LoginUtils {
 					responseDTO.setStatus(CommonStringUtils.FAILED);
 					responseDTO.setStatusCode(420);
 					return responseDTO;
-				} else if(!reportingIdExists) {
-					responseDTO.setMessage("Reporting id doesnt exists");
+				} else {
+					responseDTO.setMessage("Invalid reporting Id");
 					responseDTO.setStatus(CommonStringUtils.FAILED);
 					responseDTO.setStatusCode(430);
 					return responseDTO;
@@ -202,6 +206,22 @@ public class LoginUtils {
 		return responseDTO;
 	}
 
+	private boolean validateReportingId(String userId,String role) {
+		boolean retVal ;
+		RoleEnums roleEnums = CommonUtils.getRoleEnumFromDesignation(role);
+		Integer level = CommonUtils.getLevelFromRoleEnums(roleEnums);
+		if(level<=2) {
+			return false;
+		}
+		if(userService.userExists(userId)) {
+			User user = userService.getUserByUserName(userId);
+			retVal = ((user.getLevel()<=4)&&(level>user.getLevel()))?false:true;
+		}else {
+			retVal = true;
+		}
+		return retVal;
+	}
+
 	private User fillUser(CreateUserDTO createUser) {
 		User user = new User();
 		user.setCreatedOn(new Date());
@@ -209,12 +229,14 @@ public class LoginUtils {
 		user.setRole(createUser.getDesignation());
 		user.setUsername(createUser.getUsername());
 		user.setLchgtime(new Date());
-		if (user.getRole().equals("Project Manager")) {
+		RoleEnums role = CommonUtils.getRoleEnumFromDesignation(createUser.getDesignation());
+		user.setLevel(CommonUtils.getLevelFromRoleEnums(role));
+		if (user.getLevel()<=3) {
 			user.setLocked(0);
 			user.setActive(1);
 			user.setApprovedOn(new Date());
 			user.setActionBy(user.getUsername());
-			user.setReason("Auto approval for designation of project manager and above");
+			user.setReason("Auto approval for Level 3 and above");
 		} else {
 			user.setLocked(0);
 			user.setActive(0);
