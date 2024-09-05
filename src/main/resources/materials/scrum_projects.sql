@@ -10,6 +10,7 @@ CREATE TABLE `scrum_projects` (
   `project_name` varchar(30) NOT NULL,
   `description` text NOT NULL,
   `created_by` varchar(10) NOT NULL,
+  `department`  varchar(50) NOT NULL,
   `team_involved` varchar(4000) NOT NULL,
   `created_on` datetime NOT NULL,
   `closed_on` datetime DEFAULT NULL,

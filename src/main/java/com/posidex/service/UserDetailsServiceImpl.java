@@ -72,4 +72,9 @@ public class UserDetailsServiceImpl implements UserDetailsServiceI {
 		return retValue;
 	}
 
+	@Override
+	public UserDetails getUserDetailsByEmpId(String empId) {
+		return userDetailsRepository.getUserDetailsByEmpId(empId);
+	}
+
 }

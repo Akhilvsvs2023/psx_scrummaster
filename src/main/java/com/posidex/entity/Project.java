@@ -20,6 +20,8 @@ public class Project {
 	private String description;
 	@Column(name = "created_by")
 	private String createdBy;
+	@Column(name = "department")
+	private String department;
 	@Column(name = "team_involved")
 	private String teamInvolved;
 	@Column(name = "created_on")
@@ -54,6 +56,12 @@ public class Project {
 	public void setCreatedBy(String createdBy) {
 		this.createdBy = createdBy;
 	}
+	public String getDepartment() {
+		return department;
+	}
+	public void setDepartment(String department) {
+		this.department = department;
+	}
 	public String getTeamInvolved() {
 		return teamInvolved;
 	}
@@ -84,13 +92,14 @@ public class Project {
 	public void setLchgtime(Date lchgtime) {
 		this.lchgtime = lchgtime;
 	}
-	public Project(String projectId, String projectName, String description, String createdBy, String teamInvolved,
-			Date createdOn, Date closedOn, int active, Date lchgtime) {
+	public Project(String projectId, String projectName, String description, String createdBy, String department,
+			String teamInvolved, Date createdOn, Date closedOn, int active, Date lchgtime) {
 		super();
 		this.projectId = projectId;
 		this.projectName = projectName;
 		this.description = description;
 		this.createdBy = createdBy;
+		this.department = department;
 		this.teamInvolved = teamInvolved;
 		this.createdOn = createdOn;
 		this.closedOn = closedOn;
@@ -103,8 +112,9 @@ public class Project {
 	@Override
 	public String toString() {
 		return "Project [projectId=" + projectId + ", projectName=" + projectName + ", description=" + description
-				+ ", createdBy=" + createdBy + ", teamInvolved=" + teamInvolved + ", createdOn=" + createdOn
-				+ ", closedOn=" + closedOn + ", active=" + active + ", lchgtime=" + lchgtime + "]";
+				+ ", createdBy=" + createdBy + ", department=" + department + ", teamInvolved=" + teamInvolved + ", createdOn="
+				+ createdOn + ", closedOn=" + closedOn + ", active=" + active + ", lchgtime=" + lchgtime + "]";
 	}
-
+	
+	
 }

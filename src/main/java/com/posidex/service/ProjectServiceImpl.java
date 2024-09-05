@@ -16,8 +16,11 @@ import com.google.gson.Gson;
 import com.posidex.dto.CreateProjectDto;
 import com.posidex.dto.ResponseDTO;
 import com.posidex.entity.Project;
+import com.posidex.entity.UserDetails;
+import com.posidex.enums.RoleEnums;
 import com.posidex.repository.ProjectRepository;
 import com.posidex.util.CommonStringUtils;
+import com.posidex.util.CommonUtils;
 
 @Service
 public class ProjectServiceImpl implements ProjectServiceI {
@@ -48,12 +51,14 @@ public class ProjectServiceImpl implements ProjectServiceI {
 	}
 
 	private void fillProject(CreateProjectDto dto, Project project) {
+		UserDetails details = userDetailsService.getUserDetailsByEmpId(dto.getCreatedBy());
 		project.setProjectName(dto.getProjectName());
 		project.setDescription(dto.getDescription());
 		UUID id = UUID.randomUUID();
 		while(repo.getProjectByprojectId(id.toString())!=null) {
 			id = UUID.randomUUID();
 		}
+		project.setDepartment(details.getDepartmentName());
 		project.setProjectId(id.toString());
 		project.setCreatedBy(dto.getCreatedBy());
 		project.setCreatedOn(new Date(System.currentTimeMillis()));
@@ -71,12 +76,26 @@ public class ProjectServiceImpl implements ProjectServiceI {
 	@Override
 	public List<Project> getMyProject(String empId) {
 		List<Project> retValue = new ArrayList<>();
-		List<Project> projectsList = repo.findAll();
-		projectsList .forEach(x->{
-			if(x.getTeamInvolved().contains(empId)||x.getCreatedBy().equals(empId)) {
-				retValue.add(x);
+		UserDetails userDetails = userDetailsService.getUserDetailsByEmpId(empId);
+		RoleEnums role = CommonUtils.getRoleEnumFromDesignation(userDetails.getDesignation());
+		switch (role) {
+		case FOUNDER: {
+			retValue = repo.findAll();
+			break;
+		}
+		case VICEPRESIDENT: {
+			retValue = repo.getProjectofReportees(userDetails.getEmpId());
+			break;
+		}
+		default:
+			List<Project> projectsList = repo.getProjectByDepartment(userDetails.getDepartmentName());
+			for(Project project :projectsList) {
+				if(project.getTeamInvolved().contains(empId)||project.getCreatedBy().equals(empId)) {
+					retValue.add(project);
+				}
 			}
-		});
+			break;
+		}		
 		return retValue;
 	}
 
