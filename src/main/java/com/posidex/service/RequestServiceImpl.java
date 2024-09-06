@@ -17,7 +17,6 @@ import com.posidex.entity.UserDetails;
 import com.posidex.repository.RequestRepository;
 import com.posidex.repository.UserRepository;
 import com.posidex.util.CommonStringUtils;
-import com.posidex.util.LoginUtils;
 
 import jakarta.transaction.Transactional;
 

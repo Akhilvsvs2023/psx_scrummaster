@@ -1,6 +1,5 @@
 package com.posidex.dto;
 
-import com.posidex.entity.User;
 import com.posidex.entity.UserDetails;
 
 public class JwtResponse {

@@ -10,7 +10,6 @@ import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.google.gson.Gson;
 import com.posidex.dto.CreateProjectDto;
@@ -30,7 +29,7 @@ public class ProjectServiceImpl implements ProjectServiceI {
 	
 	@Autowired UserDetailsServiceI userDetailsService;
 	
-	private static Logger logger = Logger.getLogger(UserDetailsServiceImpl.class.getName());
+	private static Logger logger = Logger.getLogger(ProjectServiceImpl.class.getName());
 
 	@Override
 	public ResponseDTO createProject(CreateProjectDto dto) {
@@ -67,7 +66,7 @@ public class ProjectServiceImpl implements ProjectServiceI {
 		Map<String,List<String>> involvedMembers = new LinkedHashMap<>();
 		dto.getProjectMembers().forEach(lead->{
 			List<String> reporteesList = new ArrayList<>();
-			userDetailsService.getReportees(lead).forEach(reportee->{reporteesList.add(reportee.getEmpId());});
+			userDetailsService.getReportees(lead).forEach(reportee->reporteesList.add(reportee.getEmpId()));
 			involvedMembers.put(lead, reporteesList);
 		});
 		project.setTeamInvolved(new Gson().toJson(involvedMembers));

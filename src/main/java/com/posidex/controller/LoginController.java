@@ -10,7 +10,6 @@ import com.posidex.dto.CreateUserDTO;
 import com.posidex.dto.JwtRequest;
 import com.posidex.dto.JwtResponse;
 import com.posidex.dto.ResponseDTO;
-import com.posidex.entity.User;
 import com.posidex.util.LoginUtils;
 
 @RequestMapping("/login")
